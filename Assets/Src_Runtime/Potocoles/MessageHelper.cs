@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using Unity.VisualScripting;
 
-namespace Protocoles {
+namespace ServerMain {
     public static class MessageHelper {
 
         static Dictionary<Type, int> typeIDMap = new Dictionary<Type, int>() {
