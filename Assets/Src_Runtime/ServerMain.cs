@@ -27,7 +27,21 @@ namespace ServerMain {
 
             server.OnData += (connID, data) => {
                 Debug.Log("服务端接收数据 " + connID + " " + System.Text.Encoding.UTF8.GetString(data));
-                server.Send(connID, data);
+                int typeID = MessageHelper.ReadHeader(data.Array);
+                // 1.会接收到信息
+                Debug.Log("服务端接收消息类型: " + typeID);
+                if (typeID == MessageConst.SpawnRole_Req) {
+                    Debug.Log("收到信息");
+                    var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
+
+                    Debug.Log("服务端接收 SpawnRole_Res: " + req.idSig + " " + req.pos);
+                } else if (typeID == 1) {
+
+                } else {
+                    Debug.LogError("未知的消息类型: " + typeID);
+                }
+
+                // 2.回发信息
             };
 
             server.OnDisconnected += (connID) => {

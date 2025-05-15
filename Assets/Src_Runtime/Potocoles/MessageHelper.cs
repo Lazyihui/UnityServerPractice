@@ -9,6 +9,9 @@ namespace ServerMain {
     public static class MessageHelper {
 
         static Dictionary<Type, int> typeIDMap = new Dictionary<Type, int>() {
+            { typeof(SpawnRoleReqMessage), MessageConst.SpawnRole_Req },
+            { typeof(SpawnRoleResMessage), MessageConst.SpawnRole_Res },
+            { typeof(SpawnRoleBroMessage), MessageConst.SpawnRole_Bro }
         };
 
 
@@ -54,6 +57,7 @@ namespace ServerMain {
                 return default;
             } else {
                 int typeID = ReadHeader(data);
+                Debug.Log(typeID + " " + GetTypeID<T>());
                 if (typeID != GetTypeID<T>()) {
                     Debug.LogError("TypeID not match: " + typeID + " " + GetTypeID<T>());
                     return default;
