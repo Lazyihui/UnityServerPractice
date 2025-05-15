@@ -7,32 +7,29 @@ using Unity.VisualScripting;
 namespace ServerMain {
 
     public class ServerMain : MonoBehaviour {
+        ServerContext ctx;
 
-        Server server;
-        int port = 7777;
-        int messageSize = 1024;
         bool isTearDown = false;
+
 
         void Start() {
             Application.runInBackground = true; // 允许后台运行
-
-            server = new Server(messageSize);
-            server.Start(port);
-            Debug.Log("服务器启动成功: " + port);
-
+            ctx = new ServerContext();
+            var server = ctx.server;
 
             server.OnConnected += (connID, str) => {
                 Debug.Log("服务端链接 " + connID);
+                ctx.clientIDs.Add(connID);
             };
 
             server.OnData += (connID, data) => {
-                Debug.Log("服务端接收数据 " + connID + " " + System.Text.Encoding.UTF8.GetString(data));
                 int typeID = MessageHelper.ReadHeader(data.Array);
+
                 // 1.会接收到信息
-                Debug.Log("服务端接收消息类型: " + typeID);
                 if (typeID == MessageConst.SpawnRole_Req) {
-                    Debug.Log("收到信息");
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
+                    // 广播回传
+                    OnMessageDomain.OnSpawnRole(connID, req, ctx);
 
                     Debug.Log("服务端接收 SpawnRole_Res: " + req.idSig + " " + req.pos);
                 } else if (typeID == 1) {
@@ -46,12 +43,14 @@ namespace ServerMain {
 
             server.OnDisconnected += (connID) => {
                 Debug.Log("服务端断开链接 " + connID);
+                ctx.clientIDs.Remove(connID);
             };
-
 
         }
 
         void Update() {
+            var server = ctx.server;
+
             if (server != null) {
                 server.Tick(100); // 每秒30帧
             }
@@ -68,6 +67,7 @@ namespace ServerMain {
         }
 
         void TearDown() {
+            var server = ctx.server;
             if (isTearDown) {
                 return;
             }

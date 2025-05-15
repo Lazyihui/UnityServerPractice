@@ -8,7 +8,7 @@ namespace ServerMain {
 
         public IDSignature idSig;
         
-        public Vector2 moveDir;
+        public Vector2 pos;
 
     }
 
