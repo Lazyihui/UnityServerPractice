@@ -16,9 +16,15 @@ namespace ServerMain {
 
             for (int i = 0; i < clientIDs.Count; i++) {
                 int id = clientIDs[i];
-
-                // 过滤掉自己
+                Debug.Log("广播给 " + id + "存的长度" + clientIDs.Count);
                 if (id == connID) {
+                    // 只给自己
+                    SpawnRoleResMessage res = new SpawnRoleResMessage();
+                    res.idSig = req.idSig;
+                    res.pos = req.pos;
+                    byte[] dataOwner = MessageHelper.ToData(res);
+
+                    ctx.server.Send(id, dataOwner);
                     continue;
                 }
 

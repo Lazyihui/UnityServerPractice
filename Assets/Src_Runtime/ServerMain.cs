@@ -11,7 +11,6 @@ namespace ServerMain {
 
         bool isTearDown = false;
 
-
         void Start() {
             Application.runInBackground = true; // 允许后台运行
             ctx = new ServerContext();

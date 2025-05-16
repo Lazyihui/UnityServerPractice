@@ -58,7 +58,6 @@ namespace ServerMain {
                 return default;
             } else {
                 int typeID = ReadHeader(data);
-                Debug.Log(typeID + " " + GetTypeID<T>());
                 if (typeID != GetTypeID<T>()) {
                     Debug.LogError("TypeID not match: " + typeID + " " + GetTypeID<T>());
                     return default;
