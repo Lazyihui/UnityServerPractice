@@ -18,8 +18,9 @@ namespace ServerMain {
             var server = ctx.server;
 
             server.OnConnected += (connID, str) => {
-                Debug.Log("服务端链接 " + connID);
+                Debug.Log("服务端链接 " + connID + "这个是什么 " + str);
                 ctx.clientIDs.Add(connID);
+
             };
 
             server.OnData += (connID, data) => {
@@ -29,10 +30,16 @@ namespace ServerMain {
                 if (typeID == MessageConst.SpawnRole_Req) {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 广播回传
+                    Debug.Log("服务端接收 SpawnRole_Res: " + req.idSig + " " + req.pos);
+                    
                     OnMessageDomain.OnSpawnRole(connID, req, ctx);
 
-                    Debug.Log("服务端接收 SpawnRole_Res: " + req.idSig + " " + req.pos);
-                } else if (typeID == 1) {
+                } else if (typeID == MessageConst.Test_Res) {
+                    var req = MessageHelper.ReadDate<TestReqMessage>(data.Array);
+
+                    // 广播回传
+                    Debug.Log("服务端接收 Test_Res:" + " " + req.pos);
+
 
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);

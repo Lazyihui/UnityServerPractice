@@ -11,7 +11,8 @@ namespace ServerMain {
         static Dictionary<Type, int> typeIDMap = new Dictionary<Type, int>() {
             { typeof(SpawnRoleReqMessage), MessageConst.SpawnRole_Req },
             { typeof(SpawnRoleResMessage), MessageConst.SpawnRole_Res },
-            { typeof(SpawnRoleBroMessage), MessageConst.SpawnRole_Bro }
+            { typeof(SpawnRoleBroMessage), MessageConst.SpawnRole_Bro },
+             { typeof(TestReqMessage), MessageConst.Test_Req }
         };
 
 
