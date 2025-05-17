@@ -10,11 +10,22 @@ namespace ServerMain {
         int port = 7777;
         int messageSize = 1024;
         public List<int> clientIDs;
+        public Dictionary<string, UserEntity> userMap;
 
         public ServerContext() {
             clientIDs = new List<int>();
+            userMap = new Dictionary<string, UserEntity>();
+
             server = new Server(messageSize);
             server.Start(port);
+        }
+
+        public void AddUserEntity(string userName, UserEntity entity) {
+            if (!userMap.ContainsKey(userName)) {
+                userMap.Add(userName, entity);
+            } else {
+                Debug.LogWarning("UserEntity already exists: " + userName);
+            }
         }
 
     }
