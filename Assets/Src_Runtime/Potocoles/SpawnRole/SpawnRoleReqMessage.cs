@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ServerMain {
 
     public struct SpawnRoleReqMessage {
-
+        public string roleName;
         public IDSignature idSig;
         
         public Vector2 pos;

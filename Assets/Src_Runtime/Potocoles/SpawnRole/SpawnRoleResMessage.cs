@@ -5,9 +5,10 @@ using UnityEngine;
 namespace ServerMain {
 
     public struct SpawnRoleResMessage {
+        public string roleName;
 
         public IDSignature idSig;
-        
+
         public Vector2 pos;
 
     }

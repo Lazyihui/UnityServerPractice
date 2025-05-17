@@ -17,7 +17,6 @@ namespace ServerMain {
             var server = ctx.server;
 
             server.OnConnected += (connID, str) => {
-                Debug.Log("服务端链接 " + connID + "这个是什么 " + str);
                 ctx.clientIDs.Add(connID);
 
             };

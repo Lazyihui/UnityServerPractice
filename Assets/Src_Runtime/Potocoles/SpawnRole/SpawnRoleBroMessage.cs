@@ -5,6 +5,7 @@ using UnityEngine;
 namespace ServerMain {
 
     public struct SpawnRoleBroMessage {
+        public string roleName;
 
         public IDSignature idSig;
         
