@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Telepathy;
+using System.Collections.Concurrent;
 
 namespace ServerMain {
 
@@ -11,6 +12,7 @@ namespace ServerMain {
         int messageSize = 1024;
         public List<int> clientIDs;
         public Dictionary<string, UserEntity> userMap;
+        // public ConcurrentDictionary
 
         public ServerContext() {
             clientIDs = new List<int>();

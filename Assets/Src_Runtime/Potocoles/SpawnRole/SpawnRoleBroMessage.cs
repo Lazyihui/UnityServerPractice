@@ -7,8 +7,6 @@ namespace ServerMain {
     public struct SpawnRoleBroMessage {
         public string roleName;
 
-        public IDSignature idSig;
-        
         public Vector2 pos;
 
     }
