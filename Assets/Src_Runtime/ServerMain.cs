@@ -27,15 +27,8 @@ namespace ServerMain {
                 // 1.会接收到信息
                 if (typeID == MessageConst.SpawnRole_Req) {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
-                    // 广播回传
-                    Debug.Log("服务端接收 SpawnRole_Res: " + " " + req.pos);
-
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
-
-                    // 广播给别人
-                    OnMessageDomain.OnSpawnRoleBro(connID, req, ctx);
-
                 } else if (typeID == MessageConst.Test_Res) {
                     var req = MessageHelper.ReadDate<TestReqMessage>(data.Array);
 
