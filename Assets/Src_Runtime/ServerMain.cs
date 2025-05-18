@@ -42,7 +42,6 @@ namespace ServerMain {
                     // 广播回传
                     Debug.Log("服务端接收 Test_Res:" + " " + req.pos);
 
-
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);
                 }
@@ -53,6 +52,9 @@ namespace ServerMain {
             server.OnDisconnected += (connID) => {
                 Debug.Log("服务端断开链接 " + connID);
                 ctx.clientIDs.Remove(connID);
+
+                // 这里是一个问题 怎么样移除 TODO:5.18
+                // ctx.userMap.Remove();
             };
 
         }
