@@ -29,17 +29,14 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
-                } else if (typeID == MessageConst.Test_Res) {
-                    var req = MessageHelper.ReadDate<TestReqMessage>(data.Array);
-
-                    // 广播回传
-                    Debug.Log("服务端接收 Test_Res:" + " " + req.pos);
-
+                } else if (typeID == MessageConst.Move_Req) {
+                    var req = MessageHelper.ReadDate<MoveReqMessage>(data.Array);
+                    // 处理移动请求
+                    OnMessageDomain.OnMoveReq(connID, req, ctx);
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);
                 }
 
-                // 2.回发信息
             };
 
             server.OnDisconnected += (connID) => {

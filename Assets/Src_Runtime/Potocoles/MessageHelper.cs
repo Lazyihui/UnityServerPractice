@@ -12,7 +12,10 @@ namespace ServerMain {
             { typeof(SpawnRoleReqMessage), MessageConst.SpawnRole_Req },
             { typeof(SpawnRoleResMessage), MessageConst.SpawnRole_Res },
             { typeof(SpawnRoleBroMessage), MessageConst.SpawnRole_Bro },
-             { typeof(TestReqMessage), MessageConst.Test_Req }
+             { typeof(TestReqMessage), MessageConst.Test_Req },
+              {typeof(MoveReqMessage), MessageConst.Move_Req },
+            {typeof(MoveResMessage), MessageConst.Move_res },
+            {typeof(MoveBroMessage),MessageConst.Move_Bro}
         };
 
 

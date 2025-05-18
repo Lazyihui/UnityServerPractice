@@ -69,5 +69,31 @@ namespace ServerMain {
             }
         }
 
+        public static void OnMoveReq(int connID, MoveReqMessage req, ServerContext ctx) {
+
+            bool has = ctx.userMap.TryGetValue(req.roleName, out UserEntity user);
+
+            if (!has) {
+                Debug.LogWarning($"非法移动请求：角色 {req.roleName} 不存在");
+                return;
+            }
+
+            // 2. 更新服务端位置
+            user.pos = req.targetPos;
+            // 3. 广播移动信息给所有客户端
+            MoveBroMessage bro = new MoveBroMessage {
+                roleName = req.roleName,
+                targetPos = req.targetPos,
+                timestamp = req.timestamp
+            };
+
+            byte[] data = MessageHelper.ToData(bro);
+
+            foreach (int clientID in ctx.clientIDs) {
+                ctx.server.Send(clientID, data);
+            }
+
+        }
+
     }
 }
