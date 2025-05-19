@@ -48,25 +48,25 @@ namespace ServerMain {
                     Debug.Log($"同步已有角色 {existingUser.idSig} 给新玩家 {connID}" +
                               $": {existingUser.pos}, 角色名: {existingUser.roleName}");
                 }
-
-                // 3. 广播新玩家信息给其他所有人（原逻辑） 把新玩家信息广播给其他人 to all 
-                var clientIDs = ctx.clientIDs;
-                SpawnRoleBroMessage newPlayerBro = new SpawnRoleBroMessage {
-                    pos = randomPos,
-                    roleName = req.roleName
-                };
-                byte[] data = MessageHelper.ToData(newPlayerBro);
-
-                for (int i = 0; i < clientIDs.Count; i++) {
-                    // id 发给这个id的人
-                    int id = clientIDs[i];
-                    if (id != connID) { // 不发给自己
-                        ctx.server.Send(id, data);
-                        Debug.Log($"广播 SpawnRole_Bro 给其他玩家 {id}: {newPlayerBro.pos}");
-                    }
-                }
-
             }
+
+            // 4. 广播新玩家信息给其他所有人（原逻辑） 把新玩家信息广播给其他人 to all 
+            var clientIDs = ctx.clientIDs;
+            SpawnRoleBroMessage newPlayerBro = new SpawnRoleBroMessage {
+                pos = randomPos,
+                roleName = req.roleName
+            };
+            byte[] data = MessageHelper.ToData(newPlayerBro);
+
+            for (int i = 0; i < clientIDs.Count; i++) {
+                // id 发给这个id的人
+                int id = clientIDs[i];
+                if (id != connID) { // 不发给自己
+                    ctx.server.Send(id, data);
+                    Debug.Log($"广播 SpawnRole_Bro 给其他玩家 {id}: {newPlayerBro.pos}");
+                }
+            }
+
         }
 
         public static void OnMoveReq(int connID, MoveReqMessage req, ServerContext ctx) {
@@ -86,7 +86,6 @@ namespace ServerMain {
                 targetPos = req.targetPos,
                 timestamp = req.timestamp
             };
-
             byte[] data = MessageHelper.ToData(bro);
 
             foreach (int clientID in ctx.clientIDs) {

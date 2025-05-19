@@ -29,10 +29,15 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
+                    Debug.Log("收到生成角色请求: " + req.roleName + " connID: " + connID);
+
                 } else if (typeID == MessageConst.Move_Req) {
+
                     var req = MessageHelper.ReadDate<MoveReqMessage>(data.Array);
                     // 处理移动请求
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
+                    
+                    Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);
                 }
