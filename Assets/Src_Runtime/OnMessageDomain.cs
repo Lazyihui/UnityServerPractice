@@ -14,6 +14,7 @@ namespace ServerMain {
             Vector3 randomPos = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), 0f);
             // 1. 为新玩家生成角色并返回响应
             SpawnRoleResMessage res = new SpawnRoleResMessage {
+                roleType = RoleType.Player,
                 pos = randomPos,
                 roleName = req.roleName
             };
@@ -39,6 +40,8 @@ namespace ServerMain {
                 if (existingUser.connID != connID) {
 
                     SpawnRoleBroMessage bro = new SpawnRoleBroMessage {
+                        // TODO:要改 加一个仓库
+                        roleType = RoleType.Player,
                         pos = existingUser.pos,
                         roleName = existingUser.roleName
                     };
@@ -53,6 +56,7 @@ namespace ServerMain {
             // 4. 广播新玩家信息给其他所有人（原逻辑） 把新玩家信息广播给其他人 to all 
             var clientIDs = ctx.clientIDs;
             SpawnRoleBroMessage newPlayerBro = new SpawnRoleBroMessage {
+                roleType = RoleType.Player,
                 pos = randomPos,
                 roleName = req.roleName
             };
