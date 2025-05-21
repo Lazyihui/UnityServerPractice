@@ -1,8 +1,7 @@
 using System;
-using Codice.Client.Commands.CheckIn;
 using Telepathy;
 using UnityEngine;
-using UnityEngine.UIElements;
+using MyTelepathy;
 
 
 namespace ServerMain {

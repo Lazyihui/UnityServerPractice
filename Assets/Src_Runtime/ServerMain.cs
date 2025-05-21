@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Telepathy;
-using Unity.VisualScripting;
+using MyTelepathy;
 
 namespace ServerMain {
 
