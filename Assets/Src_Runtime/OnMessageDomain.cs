@@ -97,5 +97,33 @@ namespace ServerMain {
 
         }
 
+        public static void OnSpawnMstBro(ServerContext ctx) {
+            Vector3 spawnPosition = new Vector3(
+               UnityEngine.Random.Range(-10f, 10f),
+               UnityEngine.Random.Range(-10f, 10f),
+               0f
+           );
+
+            RoleEntity roleEntiy = new RoleEntity {
+                roleName = "monster",
+                pos = spawnPosition,
+                roleType = RoleType.Monster
+            };
+
+            ctx.roleRepo.Add(roleEntiy);
+            SpawnRoleBroMessage bro = new SpawnRoleBroMessage {
+                roleType = RoleType.Monster,
+                pos = spawnPosition,
+                roleName = "monster"
+            };
+
+            byte[] data = MessageHelper.ToData(bro);
+            foreach (int clientID in ctx.clientIDs) {
+                ctx.server.Send(clientID, data);
+            }
+
+            Debug.Log($"广播 SpawnRole_Bro 给其他玩家  {bro.pos}");
+
+        }
     }
 }

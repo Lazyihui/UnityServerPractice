@@ -10,6 +10,7 @@ namespace ServerMain {
         bool isTearDown = false;
 
         void Start() {
+
             Application.runInBackground = true; // 允许后台运行
             ctx = new ServerContext();
             var server = ctx.server;
@@ -34,7 +35,7 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<MoveReqMessage>(data.Array);
                     // 处理移动请求
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
-                    
+
                     Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);
@@ -55,10 +56,22 @@ namespace ServerMain {
         void Update() {
             var server = ctx.server;
 
+            float dt = Time.deltaTime;
+
+            if (ctx.clientIDs.Count > 0) {
+                var game = ctx.gameEntity;
+                game.spawnMstTimer += dt;
+                if (game.spawnMstTimer >= game.spawnMstInterval) {
+                    game.spawnMstTimer = 0;
+                    // Debug.Log("生成怪物");
+                    OnMessageDomain.OnSpawnMstBro(ctx);
+                }
+            }
+
+
             if (server != null) {
                 server.Tick(100); // 每秒30帧
             }
-
 
         }
 

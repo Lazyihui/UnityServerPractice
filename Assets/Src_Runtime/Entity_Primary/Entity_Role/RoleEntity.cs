@@ -6,11 +6,12 @@ using UnityEngine;
 
 namespace ServerMain {
 
-    public class RoleEntiy {
+    public class RoleEntity {
 
         public string roleName;
+        public RoleType roleType;
 
-        public int idSig; // 唯一标识符
+        public IDSignature idSig; // 唯一标识符
 
         // TODO:这里有问题 生成一个新的角色时要刷新这个位置；
         public Vector3 pos;

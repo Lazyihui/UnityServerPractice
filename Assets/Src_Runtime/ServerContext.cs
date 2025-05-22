@@ -14,9 +14,19 @@ namespace ServerMain {
         public Dictionary<string, UserEntity> userMap;
         // public ConcurrentDictionary
 
+        public GameEntity gameEntity;
+
+        // repos
+        public RoleRepository roleRepo;
+
         public ServerContext() {
             clientIDs = new List<int>();
             userMap = new Dictionary<string, UserEntity>();
+
+            gameEntity = new GameEntity();
+
+            // repos
+            roleRepo = new RoleRepository();
 
             server = new Server(messageSize);
             server.Start(port);
