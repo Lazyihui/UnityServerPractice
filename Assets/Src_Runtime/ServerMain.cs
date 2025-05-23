@@ -17,7 +17,6 @@ namespace ServerMain {
 
             server.OnConnected += (connID, str) => {
                 ctx.clientIDs.Add(connID);
-
             };
 
             server.OnData += (connID, data) => {

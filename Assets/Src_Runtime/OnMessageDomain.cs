@@ -107,10 +107,14 @@ namespace ServerMain {
             RoleEntity roleEntiy = new RoleEntity {
                 roleName = "monster",
                 pos = spawnPosition,
-                roleType = RoleType.Monster
+                roleType = RoleType.Monster,
+
             };
+            roleEntiy.idSig = new IDSignature(EntityType.Role, ctx.idServer.PickRoleID());
+
 
             ctx.roleRepo.Add(roleEntiy);
+
             SpawnRoleBroMessage bro = new SpawnRoleBroMessage {
                 roleType = RoleType.Monster,
                 pos = spawnPosition,

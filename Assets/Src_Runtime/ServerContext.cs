@@ -15,7 +15,7 @@ namespace ServerMain {
         // public ConcurrentDictionary
 
         public GameEntity gameEntity;
-
+        public IDServer idServer;
         // repos
         public RoleRepository roleRepo;
 
@@ -24,6 +24,7 @@ namespace ServerMain {
             userMap = new Dictionary<string, UserEntity>();
 
             gameEntity = new GameEntity();
+            idServer = new IDServer();
 
             // repos
             roleRepo = new RoleRepository();
