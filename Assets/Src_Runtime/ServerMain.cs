@@ -36,6 +36,10 @@ namespace ServerMain {
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
 
                     Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
+                } else if (typeID == MessageConst.SpawnBullet_Req) {
+                    var req = MessageHelper.ReadDate<SpawnBulletReqMessage>(data.Array);
+                    OnMessageDomain.OnSpawnBulletReq(connID, req, ctx);
+
                 } else {
                     Debug.LogError("未知的消息类型: " + typeID);
                 }

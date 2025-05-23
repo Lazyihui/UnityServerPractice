@@ -112,7 +112,6 @@ namespace ServerMain {
             };
             roleEntiy.idSig = new IDSignature(EntityType.Role, ctx.idServer.PickRoleID());
 
-
             ctx.roleRepo.Add(roleEntiy);
 
             SpawnRoleBroMessage bro = new SpawnRoleBroMessage {
@@ -125,9 +124,27 @@ namespace ServerMain {
             foreach (int clientID in ctx.clientIDs) {
                 ctx.server.Send(clientID, data);
             }
-
             Debug.Log($"广播 SpawnRole_Bro 给其他玩家  {bro.pos}");
-
         }
+
+        public static void OnSpawnBulletReq(int connID, SpawnBulletReqMessage req, ServerContext ctx) {
+
+            BulletEntity bulletEntity = new BulletEntity {
+                idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
+                rootPos = req.rootPos
+            };
+
+            ctx.bulletRepo.Add(bulletEntity);
+
+            SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
+                rootPos = req.rootPos,
+            };
+
+            byte[] data = MessageHelper.ToData(bro);
+            foreach (int clientID in ctx.clientIDs) {
+                ctx.server.Send(clientID, data);
+            }
+        }
+
     }
 }
