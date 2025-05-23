@@ -60,16 +60,18 @@ namespace ServerMain {
             var server = ctx.server;
 
             float dt = Time.deltaTime;
+            // 子弹移动
+             BulletDomain.MoveAllBullets(ctx, dt);
 
-            if (ctx.clientIDs.Count > 0) {
-                var game = ctx.gameEntity;
-                game.spawnMstTimer += dt;
-                if (game.spawnMstTimer >= game.spawnMstInterval) {
-                    game.spawnMstTimer = 0;
-                    // Debug.Log("生成怪物");
-                    OnMessageDomain.OnSpawnMstBro(ctx);
-                }
-            }
+            // if (ctx.clientIDs.Count > 0) {
+            //     var game = ctx.gameEntity;
+            //     game.spawnMstTimer += dt;
+            //     if (game.spawnMstTimer >= game.spawnMstInterval) {
+            //         game.spawnMstTimer = 0;
+            //         // Debug.Log("生成怪物");
+            //         OnMessageDomain.OnSpawnMstBro(ctx);
+            //     }
+            // }
 
 
             if (server != null) {

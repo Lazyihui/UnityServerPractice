@@ -128,22 +128,34 @@ namespace ServerMain {
         }
 
         public static void OnSpawnBulletReq(int connID, SpawnBulletReqMessage req, ServerContext ctx) {
+            // 获取发射者
+            if (!ctx.userMap.TryGetValue(req.belongName, out UserEntity owner)) {
+                Debug.LogWarning($"非法子弹发射请求：角色 {req.belongName} 不存在");
+                return;
+            }
 
             BulletEntity bulletEntity = new BulletEntity {
                 idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
-                rootPos = req.rootPos
+                rootPos = req.rootPos,
+                direction = req.dir, // 添加方向
+                belongIdSig = owner.idSig, // 设置发射者ID
             };
+            // bulletEntity.pos = req.rootPos.position; // 设置初始位置
 
             ctx.bulletRepo.Add(bulletEntity);
-
             SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
+                // TODO:这里也是有问题的（等我问完IDsignature）来改
+                // bulletID = bulletEntity.idSig.id,
                 rootPos = req.rootPos,
+                dir = req.dir,
             };
 
             byte[] data = MessageHelper.ToData(bro);
             foreach (int clientID in ctx.clientIDs) {
                 ctx.server.Send(clientID, data);
             }
+
+
         }
 
     }
