@@ -21,7 +21,7 @@ namespace ServerMain {
 
                 // 广播移动消息
                 BulletMoveBroMessage bro = new BulletMoveBroMessage {
-                    bulletID = bullet.idSig.entityID,
+                    iDSignature = bullet.idSig,
                     position = bullet.pos
                 };
 
@@ -38,7 +38,7 @@ namespace ServerMain {
                     ctx.bulletRepo.Remove(bullet);
                     // 发送销毁消息
                     BulletDestoryBroMessage destroyBro = new BulletDestoryBroMessage {
-                        bulletID = bullet.idSig.entityID
+                        iDSignature = bullet.idSig,
                     };
 
                     byte[] destroyData = MessageHelper.ToData(destroyBro);
