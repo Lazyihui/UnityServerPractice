@@ -138,12 +138,12 @@ namespace ServerMain {
                 idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
                 rootPos = req.rootPos,
                 direction = req.dir, // 添加方向
+                pos = req.pos,
                 belongIdSig = owner.idSig, // 设置发射者ID
             };
 
-            // bulletEntity.pos = req.rootPos.position; // 设置初始位置
             ctx.bulletRepo.Add(bulletEntity);
-            
+
             SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
                 idSig = bulletEntity.idSig,
                 rootPos = req.rootPos,
