@@ -140,12 +140,12 @@ namespace ServerMain {
                 direction = req.dir, // 添加方向
                 belongIdSig = owner.idSig, // 设置发射者ID
             };
-            // bulletEntity.pos = req.rootPos.position; // 设置初始位置
 
+            // bulletEntity.pos = req.rootPos.position; // 设置初始位置
             ctx.bulletRepo.Add(bulletEntity);
+            
             SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
-                // TODO:这里也是有问题的（等我问完IDsignature）来改
-                // bulletID = bulletEntity.idSig.id,
+                idSig = bulletEntity.idSig,
                 rootPos = req.rootPos,
                 dir = req.dir,
             };
