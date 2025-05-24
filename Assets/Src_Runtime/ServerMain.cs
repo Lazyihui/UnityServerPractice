@@ -36,7 +36,8 @@ namespace ServerMain {
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
 
                     Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
-                } else if (typeID == MessageConst.SpawnBullet_Req) {
+                } else if (typeID == MessageConst.BulletSpawn_Req) {
+
                     var req = MessageHelper.ReadDate<SpawnBulletReqMessage>(data.Array);
                     OnMessageDomain.OnSpawnBulletReq(connID, req, ctx);
 
@@ -61,7 +62,7 @@ namespace ServerMain {
 
             float dt = Time.deltaTime;
             // 子弹移动
-             BulletDomain.MoveAllBullets(ctx, dt);
+            BulletDomain.MoveAllBullets(ctx, dt);
 
             // if (ctx.clientIDs.Count > 0) {
             //     var game = ctx.gameEntity;
