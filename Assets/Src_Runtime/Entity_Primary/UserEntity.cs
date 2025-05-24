@@ -1,4 +1,4 @@
-using System;
+using MyTelepathy;
 using UnityEngine;
 
 namespace ServerMain {

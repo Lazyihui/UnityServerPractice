@@ -1,5 +1,4 @@
-using System;
-using UnityEngine;
+using MyTelepathy;
 
 namespace ServerMain {
     public class GameEntity {
