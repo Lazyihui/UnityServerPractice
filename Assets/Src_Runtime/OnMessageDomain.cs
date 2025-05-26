@@ -127,36 +127,6 @@ namespace ServerMain {
             Debug.Log($"广播 SpawnRole_Bro 给其他玩家  {bro.pos}");
         }
 
-        public static void OnSpawnBulletReq(int connID, SpawnBulletReqMessage req, ServerContext ctx) {
-            // 获取发射者
-            if (!ctx.userMap.TryGetValue(req.belongName, out UserEntity owner)) {
-                Debug.LogWarning($"非法子弹发射请求：角色 {req.belongName} 不存在");
-                return;
-            }
-
-            BulletEntity bulletEntity = new BulletEntity {
-                idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
-                rootPos = req.rootPos,
-                direction = req.dir, // 添加方向
-                pos = req.pos,
-                belongIdSig = owner.idSig, // 设置发射者ID
-            };
-
-            ctx.bulletRepo.Add(bulletEntity);
-
-            SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
-                idSig = bulletEntity.idSig,
-                rootPos = req.rootPos,
-                dir = req.dir,
-            };
-
-            byte[] data = MessageHelper.ToData(bro);
-            foreach (int clientID in ctx.clientIDs) {
-                ctx.server.Send(clientID, data);
-            }
-
-
-        }
 
     }
 }

@@ -1,6 +1,6 @@
-using UnityEngine;
 using Telepathy;
 using MyTelepathy;
+using UnityEngine;
 
 namespace ServerMain {
 
@@ -39,10 +39,10 @@ namespace ServerMain {
                 } else if (typeID == MessageConst.BulletSpawn_Req) {
 
                     var req = MessageHelper.ReadDate<SpawnBulletReqMessage>(data.Array);
-                    OnMessageDomain.OnSpawnBulletReq(connID, req, ctx);
+                    BulletDomain.OnSpawnBulletReq(connID, req, ctx);
 
-                } else {
-                    Debug.LogError("未知的消息类型: " + typeID);
+                } else if (typeID == MessageConst.BulletDestory_Req) {
+
                 }
 
             };

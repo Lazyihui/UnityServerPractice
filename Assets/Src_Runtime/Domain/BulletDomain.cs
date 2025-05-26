@@ -8,6 +8,34 @@ namespace ServerMain {
 
     public static class BulletDomain {
 
+        public static void OnSpawnBulletReq(int connID, SpawnBulletReqMessage req, ServerContext ctx) {
+            // 获取发射者
+            if (!ctx.userMap.TryGetValue(req.belongName, out UserEntity owner)) {
+                Debug.LogWarning($"非法子弹发射请求：角色 {req.belongName} 不存在");
+                return;
+            }
+
+            BulletEntity bulletEntity = new BulletEntity {
+                idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
+                rootPos = req.rootPos,
+                direction = req.dir, // 添加方向
+                pos = req.pos,
+                belongIdSig = owner.idSig, // 设置发射者ID
+            };
+
+            ctx.bulletRepo.Add(bulletEntity);
+
+            SpawnBulletBroMessage bro = new SpawnBulletBroMessage {
+                idSig = bulletEntity.idSig,
+                rootPos = req.rootPos,
+                dir = req.dir,
+            };
+
+            byte[] data = MessageHelper.ToData(bro);
+            foreach (int clientID in ctx.clientIDs) {
+                ctx.server.Send(clientID, data);
+            }
+        }
         // 这个应该从配置文件读取
         public const float BULLET_SPEED = 10f;
 
@@ -31,9 +59,9 @@ namespace ServerMain {
                     ctx.server.Send(clientID, date);
                 }
 
-                // 检查是否出界
                 // 检查子弹是否超出边界
                 if (IsOutOfBounds(bullet.pos)) {
+                    Debug.Log($"子弹 {bullet.idSig.entityID} 超出边界，移除");
                     // 移除子弹
                     ctx.bulletRepo.Remove(bullet);
                     // 发送销毁消息
@@ -52,9 +80,12 @@ namespace ServerMain {
         }
         static bool IsOutOfBounds(Vector3 position) {
             // 定义边界值
-            float boundary = 20f;
-            return position.x < -boundary || position.x > boundary ||
-                   position.y < -boundary || position.y > boundary;
+            bool IsOutOfBounds = false;
+            if (position.y > 10) {
+                IsOutOfBounds = true;
+            }
+
+            return IsOutOfBounds;
         }
 
     }
