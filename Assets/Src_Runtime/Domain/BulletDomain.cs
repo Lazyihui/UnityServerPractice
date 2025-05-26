@@ -90,16 +90,36 @@ namespace ServerMain {
         }
 
         public static void OnHitStuff(ServerContext ctx, BulletEntity blt) {
-
             int len = ctx.stuffRepo.TakeAll(out StuffEntity[] stuffs);
+            bool hasHit = false;
 
             for (int i = 0; i < len; i++) {
                 StuffEntity stuff = stuffs[i];
 
                 float distance = Vector3.Distance(blt.pos, stuff.pos);
 
-                if (distance < 0.5f) { // 假设1.0f是子弹与物体的碰撞距离
-                    Debug.Log($"子弹 {blt.idSig} 命中物品 {stuff.idSig}，位置: {stuff.pos}");
+                if (distance < 0.5f && !hasHit) { // 假设1.0f是子弹与物体的碰撞距离
+                    Debug.Log("击中");
+                    // Server 移除
+                    ctx.bulletRepo.Remove(blt);
+                    ctx.stuffRepo.Remove(stuff);
+                    // 广播子弹销毁消息
+                    BulletDestoryBroMessage destroyBro = new BulletDestoryBroMessage();
+                    destroyBro.Init(blt.idSig);
+                    byte[] destroyData = MessageHelper.ToData(destroyBro);
+
+                    // 广播物体销毁消息
+                    StuffDestoryBroMessage stuffDestroyBro = new StuffDestoryBroMessage();
+                    stuffDestroyBro.Init(stuff.idSig);
+                    byte[] stuffDestroyData = MessageHelper.ToData(stuffDestroyBro);
+
+                    foreach (int clientID in ctx.clientIDs) {
+                        ctx.server.Send(clientID, destroyData);
+                        ctx.server.Send(clientID, stuffDestroyData);
+                    }
+
+                    // 广播物体被击中消息
+                    hasHit = true;
                 }
 
             }

@@ -48,7 +48,6 @@ namespace ServerMain {
                 ctx.stuffRepo.Remove(entity);
                 // 广播移除
                 StuffDestoryBroMessage bro = new StuffDestoryBroMessage();
-                Debug.Log($"物品 {entity.idSig} 超出边界，已移除");
                 bro.Init(entity.idSig);
 
                 byte[] data = MessageHelper.ToData(bro);
