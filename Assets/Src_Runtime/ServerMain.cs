@@ -27,14 +27,12 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
-                    Debug.Log("收到生成角色请求: " + req.roleName + " connID: " + connID);
 
                 } else if (typeID == MessageConst.Move_Req) {
 
                     var req = MessageHelper.ReadDate<MoveReqMessage>(data.Array);
                     // 处理移动请求
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
-                    Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
 
                 } else if (typeID == MessageConst.BulletSpawn_Req) {
 
@@ -63,6 +61,15 @@ namespace ServerMain {
             float dt = Time.deltaTime;
             // 子弹移动
             BulletDomain.MoveAllBullets(ctx, dt);
+
+            // Stuff
+            int len = ctx.stuffRepo.TakeAll(out var stuffs);
+
+            for (int i = 0; i < len; i++) {
+                var stuff = stuffs[i];
+                // 物品自由落体
+                StuffDomain.FreeFallingMove(ctx, stuff, dt);
+            }
 
             if (ctx.clientIDs.Count > 0) {
                 var game = ctx.gameEntity;
