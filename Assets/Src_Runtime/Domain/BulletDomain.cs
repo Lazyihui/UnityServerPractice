@@ -49,7 +49,7 @@ namespace ServerMain {
 
                 // 广播移动消息
                 BulletMoveBroMessage bro = new BulletMoveBroMessage {
-                    iDSignature = bullet.idSig,
+                    idSig = bullet.idSig,
                     position = bullet.pos
                 };
 

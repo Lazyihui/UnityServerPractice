@@ -34,8 +34,8 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<MoveReqMessage>(data.Array);
                     // 处理移动请求
                     OnMessageDomain.OnMoveReq(connID, req, ctx);
-
                     Debug.Log("收到移动请求: " + req.roleName + " connID: " + connID);
+
                 } else if (typeID == MessageConst.BulletSpawn_Req) {
 
                     var req = MessageHelper.ReadDate<SpawnBulletReqMessage>(data.Array);
@@ -64,15 +64,15 @@ namespace ServerMain {
             // 子弹移动
             BulletDomain.MoveAllBullets(ctx, dt);
 
-            // if (ctx.clientIDs.Count > 0) {
-            //     var game = ctx.gameEntity;
-            //     game.spawnMstTimer += dt;
-            //     if (game.spawnMstTimer >= game.spawnMstInterval) {
-            //         game.spawnMstTimer = 0;
-            //         // Debug.Log("生成怪物");
-            //         OnMessageDomain.OnSpawnMstBro(ctx);
-            //     }
-            // }
+            if (ctx.clientIDs.Count > 0) {
+                var game = ctx.gameEntity;
+                game.spawnMstTimer += dt;
+                if (game.spawnMstTimer >= game.spawnMstInterval) {
+                    game.spawnMstTimer = 0;
+                    // Debug.Log("生成怪物");
+                    StuffDomain.OnSpawnStuff(ctx);
+                }
+            }
 
 
             if (server != null) {

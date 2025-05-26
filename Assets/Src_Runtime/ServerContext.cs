@@ -19,6 +19,7 @@ namespace ServerMain {
         // repos
         public RoleRepository roleRepo;
         public BulletRepository bulletRepo;
+        public StuffRepository stuffRepo;
         public ServerContext() {
             clientIDs = new List<int>();
             userMap = new Dictionary<string, UserEntity>();
@@ -29,6 +30,7 @@ namespace ServerMain {
             // repos
             roleRepo = new RoleRepository();
             bulletRepo = new BulletRepository();
+            stuffRepo = new StuffRepository();
 
             server = new Server(messageSize);
             server.Start(port);
