@@ -110,7 +110,7 @@ namespace ServerMain {
                 roleType = RoleType.Monster,
 
             };
-            roleEntiy.idSig = new IDSignature(EntityType.Role, ctx.idServer.PickRoleID());
+            roleEntiy.idSig = ctx.idServer.PickRoleID();
 
             ctx.roleRepo.Add(roleEntiy);
 

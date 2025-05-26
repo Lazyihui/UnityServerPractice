@@ -40,6 +40,11 @@ namespace ServerMain {
                     BulletDomain.OnSpawnBulletReq(connID, req, ctx);
 
                 } else if (typeID == MessageConst.BulletDestory_Req) {
+                    var req = MessageHelper.ReadDate<BulletDestoryReqMessage>(data.Array);
+
+                } else if (typeID == MessageConst.StuffDestory_Req) {
+
+                    var req = MessageHelper.ReadDate<StuffDestoryReqMessage>(data.Array);
 
                 }
 
@@ -61,11 +66,17 @@ namespace ServerMain {
             float dt = Time.deltaTime;
             // 子弹移动
             BulletDomain.MoveAllBullets(ctx, dt);
+            // Bullet 
+            int lenbullet = ctx.bulletRepo.TakeAll(out var bullets);
+            for (int i = 0; i < lenbullet; i++) {
+                var blt = bullets[i];
+                BulletDomain.OnHitStuff(ctx, blt);
+            }
+
 
             // Stuff
-            int len = ctx.stuffRepo.TakeAll(out var stuffs);
-
-            for (int i = 0; i < len; i++) {
+            int lenStuff = ctx.stuffRepo.TakeAll(out var stuffs);
+            for (int i = 0; i < lenStuff; i++) {
                 var stuff = stuffs[i];
                 // 物品自由落体
                 StuffDomain.FreeFallingMove(ctx, stuff, dt);

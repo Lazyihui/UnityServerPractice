@@ -5,12 +5,12 @@ namespace ServerMain {
 
     public class BulletRepository {
 
-        Dictionary<IDSignature, BulletEntity> all;
+        Dictionary<int, BulletEntity> all;
 
         BulletEntity[] temArray;
 
         public BulletRepository() {
-            all = new Dictionary<IDSignature, BulletEntity>();
+            all = new Dictionary<int, BulletEntity>();
             temArray = new BulletEntity[100];
         }
 
@@ -31,7 +31,7 @@ namespace ServerMain {
             return all.Count;
         }
 
-        public bool TryGet(IDSignature idSig, out BulletEntity entity) {
+        public bool TryGet(int idSig, out BulletEntity entity) {
             return all.TryGetValue(idSig, out entity);
         }
 

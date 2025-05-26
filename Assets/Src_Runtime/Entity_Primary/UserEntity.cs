@@ -8,7 +8,7 @@ namespace ServerMain {
         public string roleName;
         public int connID;
 
-        public IDSignature idSig; // 唯一标识符
+        public int idSig; // 唯一标识符
 
         public Vector3 pos;
 

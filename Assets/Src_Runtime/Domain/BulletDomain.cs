@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Telepathy;
 using UnityEngine;
 using MyTelepathy;
+using System.ComponentModel;
+using Codice.CM.Common;
 
 namespace ServerMain {
 
@@ -16,7 +18,7 @@ namespace ServerMain {
             }
 
             BulletEntity bulletEntity = new BulletEntity {
-                idSig = new IDSignature(EntityType.Bullet, ctx.idServer.PickBulletID()),
+                idSig = ctx.idServer.PickBulletID(),
                 rootPos = req.rootPos,
                 direction = req.dir, // 添加方向
                 pos = req.pos,
@@ -61,13 +63,12 @@ namespace ServerMain {
 
                 // 检查子弹是否超出边界
                 if (IsOutOfBounds(bullet.pos)) {
-                    Debug.Log($"子弹 {bullet.idSig.entityID} 超出边界，移除");
                     // 移除子弹
+
                     ctx.bulletRepo.Remove(bullet);
                     // 发送销毁消息
-                    BulletDestoryBroMessage destroyBro = new BulletDestoryBroMessage {
-                        iDSignature = bullet.idSig,
-                    };
+                    BulletDestoryBroMessage destroyBro = new BulletDestoryBroMessage();
+                    destroyBro.Init(bullet.idSig);
 
                     byte[] destroyData = MessageHelper.ToData(destroyBro);
                     foreach (int clientID in ctx.clientIDs) {
@@ -86,6 +87,22 @@ namespace ServerMain {
             }
 
             return IsOutOfBounds;
+        }
+
+        public static void OnHitStuff(ServerContext ctx, BulletEntity blt) {
+
+            int len = ctx.stuffRepo.TakeAll(out StuffEntity[] stuffs);
+
+            for (int i = 0; i < len; i++) {
+                StuffEntity stuff = stuffs[i];
+
+                float distance = Vector3.Distance(blt.pos, stuff.pos);
+
+                if (distance < 0.5f) { // 假设1.0f是子弹与物体的碰撞距离
+                    Debug.Log($"子弹 {blt.idSig} 命中物品 {stuff.idSig}，位置: {stuff.pos}");
+                }
+
+            }
         }
 
     }

@@ -5,12 +5,12 @@ namespace ServerMain {
 
     public class RoleRepository {
 
-        Dictionary<IDSignature, RoleEntity> all;
+        Dictionary<int, RoleEntity> all;
 
         RoleEntity[] temArray;
 
         public RoleRepository() {
-            all = new Dictionary<IDSignature, RoleEntity>();
+            all = new Dictionary<int, RoleEntity>();
             temArray = new RoleEntity[100];
         }
 
@@ -31,7 +31,7 @@ namespace ServerMain {
             return all.Count;
         }
 
-        public bool TryGet(IDSignature idSig, out RoleEntity entity) {
+        public bool TryGet(int idSig, out RoleEntity entity) {
             return all.TryGetValue(idSig, out entity);
         }
 

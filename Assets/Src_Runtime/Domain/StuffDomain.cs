@@ -10,7 +10,7 @@ namespace ServerMain {
 
             // 生成一个物品实体
             StuffEntity entity = new StuffEntity();
-            entity.idSig = new IDSignature(EntityType.Stuff, ctx.idServer.PickStuffID());
+            entity.idSig = ctx.idServer.PickStuffID();
             Vector3 pos = new Vector3(UnityEngine.Random.Range(-18f, 18f), 12, 0);
             entity.pos = pos;
 
@@ -67,5 +67,6 @@ namespace ServerMain {
             }
             return isOut;
         }
+
     }
 }
