@@ -8,7 +8,7 @@ namespace ServerMain {
 
     public class ServerContext {
         public Server server;
-        int port = 7777;
+        int port = 5366;
         int messageSize = 1024;
         public List<int> clientIDs;
         public Dictionary<string, UserEntity> userMap;

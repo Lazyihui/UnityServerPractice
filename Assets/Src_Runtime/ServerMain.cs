@@ -95,7 +95,7 @@ namespace ServerMain {
 
 
             if (server != null) {
-                server.Tick(100); // 每秒30帧
+                server.Tick(10000); // 每秒30帧
             }
 
         }
