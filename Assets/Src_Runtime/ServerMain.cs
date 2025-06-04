@@ -9,13 +9,19 @@ namespace ServerMain {
 
         bool isTearDown = false;
 
+        // 广播间隔
+        private float lastBroadcastTime;
+        public float broadcastInterval = 0.033f; // ~30次/秒
+
         void Start() {
+            Debug.Log("ServerMain Start");
 
             Application.runInBackground = true; // 允许后台运行
             ctx = new ServerContext();
             var server = ctx.server;
 
             server.OnConnected += (connID, str) => {
+                Debug.Log("服务端连接成功 " + connID + " " + str);
                 ctx.clientIDs.Add(connID);
             };
 
@@ -60,28 +66,24 @@ namespace ServerMain {
             };
 
         }
-
+        // TODO:再创建消息体合并发送消息
         void Update() {
             var server = ctx.server;
 
             float dt = Time.deltaTime;
-            // 子弹移动
             BulletDomain.MoveAllBullets(ctx, dt);
-            // Bullet 
-            int lenbullet = ctx.bulletRepo.TakeAll(out var bullets);
-            for (int i = 0; i < lenbullet; i++) {
-                var blt = bullets[i];
-                BulletDomain.OnHitStuff(ctx, blt);
+
+            // 每隔一段时间广播一次
+            lastBroadcastTime += dt;
+            if (lastBroadcastTime >= broadcastInterval) {
+                lastBroadcastTime = 0f;
+                // 广播所有玩家信息
+                BulletDomain.Tick(ctx, dt);
+                StuffDomain.Tick(ctx, dt);
             }
 
 
-            // Stuff
-            int lenStuff = ctx.stuffRepo.TakeAll(out var stuffs);
-            for (int i = 0; i < lenStuff; i++) {
-                var stuff = stuffs[i];
-                // 物品自由落体
-                StuffDomain.FreeFallingMove(ctx, stuff, dt);
-            }
+
 
             if (ctx.clientIDs.Count > 0) {
                 var game = ctx.gameEntity;

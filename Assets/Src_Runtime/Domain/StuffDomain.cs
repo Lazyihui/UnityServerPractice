@@ -28,6 +28,17 @@ namespace ServerMain {
             // Debug
         }
 
+        public static void Tick(ServerContext ctx, float dt) {
+
+            // 处理所有物品的自由落体移动
+            int len = ctx.stuffRepo.TakeAll(out StuffEntity[] entities);
+            for (int i = 0; i < len; i++) {
+                StuffEntity entity = entities[i];
+                FreeFallingMove(ctx, entity, dt);
+            }
+
+        }
+
         // 临时写在这里
 
         public static void FreeFallingMove(ServerContext ctx, StuffEntity entity, float dt) {
