@@ -43,14 +43,14 @@ namespace ServerMain {
                 BulletEntity bullet = bullets[i];
                 // 更新子弹位置
                 bullet.pos += bullet.direction * BULLET_SPEED * dt;
-                bullet.lastSendTime += dt;
-                // 广播移动消息
+                // bullet.lastSendTime += dt;
+                // // 广播移动消息
 
-                if (bullet.lastSendTime < bullet.sendInterval) {
-                    continue; // 如果没有到发送间隔就跳过
-                }
-                bullet.lastSendTime = 0; // 重置发送时间
-                
+                // if (bullet.lastSendTime < bullet.sendInterval) {
+                //     continue; // 如果没有到发送间隔就跳过
+                // }
+                // bullet.lastSendTime = 0; // 重置发送时间
+
                 BulletMoveBroMessage bro = new BulletMoveBroMessage {
                     idSig = bullet.idSig,
                     position = bullet.pos
@@ -91,8 +91,8 @@ namespace ServerMain {
         }
 
         public static void Tick(ServerContext ctx, float dt) {
-            // 子弹移动
-            // Bullet 
+
+            // Bullet 检测是否有击中物体
             int lenbullet = ctx.bulletRepo.TakeAll(out var bullets);
             for (int i = 0; i < lenbullet; i++) {
                 var blt = bullets[i];

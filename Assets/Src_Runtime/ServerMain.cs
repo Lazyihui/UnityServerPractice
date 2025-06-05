@@ -78,9 +78,9 @@ namespace ServerMain {
             if (lastBroadcastTime >= broadcastInterval) {
                 lastBroadcastTime = 0f;
                 // 广播所有玩家信息
-                BulletDomain.Tick(ctx, dt);
-                StuffDomain.Tick(ctx, dt);
             }
+            BulletDomain.Tick(ctx, dt);
+            StuffDomain.Tick(ctx, dt);
 
 
 
