@@ -12,5 +12,16 @@ namespace ServerMain {
 
         public Vector3 pos;
 
+        public UserEntity() {
+
+        }
+
+        public void Init(int idSig, string roleName, int connID, Vector3 pos) {
+            this.idSig = idSig;
+            this.roleName = roleName;
+            this.connID = connID;
+            this.pos = pos;
+        }
+
     }
 }

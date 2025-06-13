@@ -2,8 +2,9 @@ using Telepathy;
 using MyTelepathy;
 using UnityEngine;
 
-namespace ServerMain {
+// TODO: 认为可以修改的点 但是还没修改， 同一个玩家进入的时候 可以根据名字来判断之前有没有 如果有idsig就不需要重新生成
 
+namespace ServerMain {
     public class ServerMain : MonoBehaviour {
         ServerContext ctx;
 
@@ -27,6 +28,7 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
+                    Debug.Log("SpawnRole_Req: " + req.roleName + " connID: " + connID);
 
                 } else if (typeID == MessageConst.Move_Req) {
 
@@ -53,11 +55,38 @@ namespace ServerMain {
             server.OnDisconnected += (connID) => {
                 Debug.Log("服务端断开链接 " + connID);
                 ctx.clientIDs.Remove(connID);
+                Debug.Log($"当前在线用户数: {ctx.clientIDs.Count}");
 
-                // 这里是一个问题 怎么样移除 TODO:5.18
-                // ctx.userMap.Remove();
+                // string userNameToRemove = null;
+                // foreach (var User in ctx.userMap) {
+                //     if (User.Value.connID == connID) {
+                //         userNameToRemove = User.Key;
+                //         break;
+                //     }
+                // }
+
+                UserEntity destoryUser = null;
+                foreach (var user in ctx.userMap) {
+                    if (user.Value.connID == connID) {
+                        destoryUser = user.Value;
+                        break;
+                    }
+                }
+
+                if( destoryUser != null) {
+                    Debug.Log($"已移除用户: {destoryUser.roleName}");
+                    // 广播销毁信息
+                    OnMessageDomain.OnRoleDestoryBro(connID, destoryUser, ctx);
+                }
+
+                // if (userNameToRemove != null) {
+                //     ctx.userMap.Remove(userNameToRemove);
+                //     Debug.Log($"已移除用户: {userNameToRemove}");
+                //     // 广播销毁信息
+                //     OnMessageDomain.OnRoleDestoryReq(connID, ctx);
+                // }
             };
-            
+
 
         }
 
