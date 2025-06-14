@@ -20,18 +20,17 @@ namespace ServerMain {
             userEntity.Init(ctx.idServer.PickRoleID(), req.roleName, connID, randomPos);
             ctx.AddUserEntity(req.roleName, userEntity);
 
-            // 1. 为新玩家生成角色并返回响应
+            // 1. 为新玩家生成角色并返回响应 回给自己
             SpawnRoleResMessage res = new SpawnRoleResMessage();
             res.Init(RoleType.Player, userEntity.idSig, req.roleName, randomPos);
-
             byte[] resData = MessageHelper.ToData(res);
             ctx.server.Send(connID, resData);
 
-            // 3. 向新玩家同步所有已存在的角色信息
+            // 3. 向新玩家同步所有已存在的角色信息 将场上之前的玩家给到新来的玩家
             foreach (var existingUser in ctx.userMap.Values) {
 
                 if (existingUser.connID != connID) {
-
+                    Debug.Log($"向新玩家 {req.roleName} 同步角色: {existingUser.roleName} connID: {existingUser.connID}");
                     SpawnRoleBroMessage bro = new SpawnRoleBroMessage();
                     bro.Init(RoleType.Player, existingUser.idSig, existingUser.roleName, existingUser.pos);
 
@@ -45,6 +44,7 @@ namespace ServerMain {
             newPlayerBro.Init(req.roleType, userEntity.idSig, req.roleName, randomPos);
             byte[] data = MessageHelper.ToData(newPlayerBro);
             for (int i = 0; i < clientIDs.Count; i++) {
+                Debug.Log($"广播 SpawnRole_Bro 给其他玩家 {clientIDs[i]}: {newPlayerBro.roleName} pos: {newPlayerBro.pos}");
                 // id 发给这个id的人
                 int id = clientIDs[i];
                 if (id != connID) { // 不发给自己

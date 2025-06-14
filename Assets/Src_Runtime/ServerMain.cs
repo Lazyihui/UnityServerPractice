@@ -28,7 +28,6 @@ namespace ServerMain {
                     var req = MessageHelper.ReadDate<SpawnRoleReqMessage>(data.Array);
                     // 回发给自己生成自己 生成场上的角色
                     OnMessageDomain.OnSpawnRoleRes(connID, req, ctx);
-                    Debug.Log("SpawnRole_Req: " + req.roleName + " connID: " + connID);
 
                 } else if (typeID == MessageConst.Move_Req) {
 
